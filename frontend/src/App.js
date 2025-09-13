@@ -3,11 +3,12 @@ import UserProfileForm from "./components/UserProfileForm";
 import PortfolioDashboard from "./components/PortfolioDashboard";
 import Header from "./components/Header";
 import LLMConversation from "./components/LLMConversation";
+import AITradingDashboard from "./components/AITradingDashboard";
 import { processAndSaveUserProfile } from "./utils/csvGenerator";
 
 export default function App() {
   // State for workflow stages
-  const [currentStage, setCurrentStage] = useState('form'); // 'form', 'conversation', 'processing', 'results'
+  const [currentStage, setCurrentStage] = useState('form'); // 'form', 'conversation', 'processing', 'results', 'trading'
   
   // User profile data
   const [profile, setProfile] = useState({
@@ -23,17 +24,13 @@ export default function App() {
   const [recommendation, setRecommendation] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
-  // CSV data
-  const [csvData, setCsvData] = useState(null);
 
   // Handle data collected from LLM conversation
   const handleDataCollected = (data) => {
     setProfile(data);
     
     // Generate and save CSV
-    const generatedCSV = processAndSaveUserProfile(data);
-    setCsvData(generatedCSV);
+    processAndSaveUserProfile(data);
     
     // Move to processing stage
     setCurrentStage('processing');
@@ -141,6 +138,14 @@ export default function App() {
                   <h3 className="text-md font-medium text-blue-800 mb-2">Data Processing Complete</h3>
                   <p className="text-sm text-blue-600">Your investment profile has been saved as a CSV file. You can use this data for future reference.</p>
                 </div>
+                <div className="mt-6 flex justify-center">
+                  <button 
+                    onClick={() => setCurrentStage('trading')}
+                    className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-8 py-3 rounded-lg font-medium hover:from-green-700 hover:to-blue-700 transition-all duration-200 shadow-lg"
+                  >
+                    🚀 Launch AI Trading Dashboard
+                  </button>
+                </div>
               </>
             ) : (
               <div className="flex flex-col justify-center items-center h-64 text-gray-500">
@@ -152,6 +157,9 @@ export default function App() {
             )}
           </div>
         );
+        
+      case 'trading':
+        return <AITradingDashboard />;
         
       default:
         return null;
