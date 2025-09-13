@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const UserProfileForm = ({ profile, setProfile, onSubmit, loading }) => {
+const UserProfileForm = ({ profile, setProfile, onSubmit, loading, onStartConversation }) => {
+  const [useConversation, setUseConversation] = useState(false);
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setProfile({
@@ -10,31 +11,65 @@ const UserProfileForm = ({ profile, setProfile, onSubmit, loading }) => {
   };
 
   return (
-    <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }} className="space-y-4">
-      <div>
-        <label htmlFor="risk_score" className="block text-sm font-medium text-gray-700 mb-1">
-          Risk Tolerance (1-10)
-        </label>
-        <div className="flex items-center space-x-2">
-          <input
-            type="range"
-            id="risk_score"
-            name="risk_score"
-            min="1"
-            max="10"
-            value={profile.risk_score}
-            onChange={handleChange}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-          />
-          <span className="text-sm font-semibold bg-blue-100 text-blue-800 px-2 py-1 rounded-md w-8 text-center">
-            {profile.risk_score}
-          </span>
+    <div className="space-y-6">
+      <div className="bg-blue-50 p-4 rounded-lg">
+        <h3 className="text-lg font-medium text-blue-800 mb-2">Choose Your Preferred Method</h3>
+        <div className="flex space-x-4">
+          <button
+            type="button"
+            onClick={() => setUseConversation(false)}
+            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium ${!useConversation 
+              ? 'bg-blue-600 text-white' 
+              : 'bg-white text-gray-700 border border-gray-300'}`}
+          >
+            Manual Form
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setUseConversation(true);
+              if (onStartConversation) onStartConversation();
+            }}
+            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium ${useConversation 
+              ? 'bg-blue-600 text-white' 
+              : 'bg-white text-gray-700 border border-gray-300'}`}
+          >
+            AI Conversation
+          </button>
         </div>
-        <div className="flex justify-between text-xs text-gray-500 px-1">
-          <span>Conservative</span>
-          <span>Aggressive</span>
-        </div>
+        <p className="mt-2 text-sm text-blue-700">
+          {useConversation 
+            ? 'Our AI will ask you questions to build your investment profile.' 
+            : 'Fill out the form manually to customize your investment profile.'}
+        </p>
       </div>
+      
+      {!useConversation && (
+        <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }} className="space-y-4">
+          <div>
+            <label htmlFor="risk_score" className="block text-sm font-medium text-gray-700 mb-1">
+              Risk Tolerance (1-10)
+            </label>
+            <div className="flex items-center space-x-2">
+              <input
+                type="range"
+                id="risk_score"
+                name="risk_score"
+                min="1"
+                max="10"
+                value={profile.risk_score}
+                onChange={handleChange}
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+              />
+              <span className="text-sm font-semibold bg-blue-100 text-blue-800 px-2 py-1 rounded-md w-8 text-center">
+                {profile.risk_score}
+              </span>
+            </div>
+            <div className="flex justify-between text-xs text-gray-500 px-1">
+              <span>Conservative</span>
+              <span>Aggressive</span>
+            </div>
+          </div>
 
       <div>
         <label htmlFor="diversification" className="block text-sm font-medium text-gray-700 mb-1">
@@ -122,6 +157,8 @@ const UserProfileForm = ({ profile, setProfile, onSubmit, loading }) => {
         </button>
       </div>
     </form>
+    )}
+    </div>
   );
 };
 
