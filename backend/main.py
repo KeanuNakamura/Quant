@@ -1,10 +1,15 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import yfinance as yf
 import pandas as pd
 import numpy as np
+import json
 from typing import List, Dict, Any, Optional
+
+# Import custom modules
+from llm_service import LLMService
+from trading_strategy import run_strategy_with_params
 
 app = FastAPI(title="QuantEase API", description="Democratized Quant Trading Assistant")
 
@@ -16,6 +21,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Initialize services
+llm_service = LLMService()
 
 # Models
 class UserProfile(BaseModel):
@@ -43,10 +51,75 @@ class PortfolioRecommendation(BaseModel):
     backtest: BacktestResult
     rationale: List[str]
 
+class ConversationMessage(BaseModel):
+    message: str
+
+class TradingStrategyParams(BaseModel):
+    ticker: str = "SPY"
+    start_date: str = "2018-01-01"
+    model_type: str = "random_forest"
+    threshold: float = 0.6
+    initial_capital: float = 10000.0
+
+class ConversationResponse(BaseModel):
+    response: str
+    complete: bool = False
+    strategy_results: Optional[Dict[str, Any]] = None
+
 # Routes
 @app.get("/")
 def read_root():
     return {"message": "Welcome to QuantEase API", "status": "operational"}
+
+# Trading Strategy Chatbot Endpoints
+@app.post("/conversation/start")
+def start_conversation(user_id: str = "default_user"):
+    """Start a new conversation with the trading strategy chatbot"""
+    try:
+        conversation_id = llm_service.create_conversation(user_id)
+        initial_message = llm_service.get_conversation_data(conversation_id)["messages"][1]["content"]
+        return {
+            "conversation_id": conversation_id,
+            "message": initial_message
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/conversation/{conversation_id}", response_model=ConversationResponse)
+def process_message(conversation_id: str, message: ConversationMessage):
+    """Process a message in an existing conversation"""
+    try:
+        result = llm_service.process_message(conversation_id, message.message)
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/conversation/{conversation_id}")
+def get_conversation_data(conversation_id: str):
+    """Get the data for an existing conversation"""
+    try:
+        return llm_service.get_conversation_data(conversation_id)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/trading-strategy/run")
+def run_trading_strategy(params: TradingStrategyParams):
+    """Run a trading strategy with the specified parameters"""
+    try:
+        result = run_strategy_with_params(
+            ticker=params.ticker,
+            model_type=params.model_type,
+            start_date=params.start_date,
+            threshold=params.threshold,
+            initial_capital=params.initial_capital
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/recommendation", response_model=PortfolioRecommendation)
 def recommend_portfolio(profile: UserProfile):
