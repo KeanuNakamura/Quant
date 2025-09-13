@@ -1,0 +1,22 @@
+<<<<<<< HEAD
+fastapi==0.115.0
+uvicorn==0.30.6
+pydantic==2.9.2
+yfinance==0.2.42
+pandas==2.2.3
+numpy==2.1.1
+python-dotenv==1.0.1
+python-multipart==0.0.9
+=======
+fastapi==0.95.1
+uvicorn==0.22.0
+pydantic==1.10.7
+yfinance==0.2.18
+pandas==2.0.1
+numpy==1.24.3
+python-dotenv==1.0.0
+python-multipart==0.0.6  # For file uploads
+requests==2.31.0  # For API calls
+scikit-learn==1.2.2  # For ML models
+matplotlib==3.7.1  # For plotting
+>>>>>>> 220f454f03ae67402519a2afc2c93f33757218cf
