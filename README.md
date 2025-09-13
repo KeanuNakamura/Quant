@@ -1,6 +1,6 @@
 # Hermes - Democratized Quant Trading Assistant
 
-QuantEase is a full-stack web application that democratizes quantitative trading by letting users set goals (risk, diversification, horizon, capital), then generating real-time, data-driven portfolio recommendations with optional automated (paper) trading.
+Hermes is on a mission to make sophisticated, AI-powered trading accessible, understandable, and trustworthy for everyone—not just the financial elite. We believe everyone should have the ability to harness quantitative trading, no complex jargon or secret formulas required.
 
 ## Architecture
 
