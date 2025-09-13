@@ -1,4 +1,4 @@
-# Hermes - Democratized Quant Trading Assistant
+# Hermes - Democratized Quant Trading
 
 Hermes is on a mission to make sophisticated, AI-powered trading accessible, understandable, and trustworthy for everyone—not just the financial elite. We believe everyone should have the ability to harness quantitative trading, no complex jargon or secret formulas required.
 
