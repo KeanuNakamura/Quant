@@ -2,17 +2,17 @@
 
 Hermes is on a mission to make sophisticated, AI-powered trading accessible, understandable, and trustworthy for everyone—not just the financial elite. We believe everyone should have the ability to harness quantitative trading, no complex jargon or secret formulas required.
 
-#What Makes Hermes Different
+## What Makes Hermes Different
 Conversational Quant Trading:
 Hermes transforms quant trading into a friendly, human chat experience—no more spreadsheets, charts you don’t understand, or mysterious “magic returns.”
 Natural Language, Real Clarity:
-You tell Hermes what you want—“I want to trade Apple, long-term, medium risk”—and Hermes (powered by a cutting-edge LLM) asks you everything it needs to build your personal trading playbook.
+   You tell Hermes what you want—“I want to trade Apple, long-term, medium risk”—and Hermes (powered by a cutting-edge LLM) asks you everything it needs to build your personal trading playbook.
 Questions, Not Wizards:
-Hermes doesn’t assume you’re an expert. It guides you through choices (“What stock? How long? How aggressively?”), in plain English, at your pace, making sure you understand every step.
+   Hermes doesn’t assume you’re an expert. It guides you through choices (“What stock? How long? How aggressively?”), in plain English, at your pace, making sure you understand every step.
 Transparency in How it Works:
-Hermes gathers your answers and turns them into structured data. This data is processed and trained by proven, open-source AI trading models (using real, widely-trusted market data from sources like Yahoo Finance or Alpha Vantage).
-Features like moving averages, RSI, and other basic indicators are computed in real time.
-A simple, explainable machine learning model (like a random forest or logistic regression) generates trading signals.
+   Hermes gathers your answers and turns them into structured data. This data is processed and trained by proven, open-source AI trading models (using real, widely-trusted market data from sources like Yahoo Finance or Alpha    Vantage).
+   Features like moving averages, RSI, and other basic indicators are computed in real time.
+   A simple, explainable machine learning model (like a random forest or logistic regression) generates trading signals.
 Example: “The model predicts there’s a 65% chance AAPL will go up tomorrow. Want to buy?”
 Everything is modeled, backtested, and presented before you commit.
 Backtesting and Results, Not Promises:
